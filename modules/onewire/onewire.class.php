@@ -426,6 +426,7 @@ function usual(&$out) {
     if (!is_null($value)) {
      $prec['VALUE']=$value;
      $prec['UPDATED']=date('Y-m-d H:i:s');
+     $prec['CHECK_LATEST']=$prec['UPDATED'];
 
      $script_id=$prec['SCRIPT_ID'];
      $code=$prec['CODE'];
@@ -583,6 +584,7 @@ function updateDisplay($id) {
      // value updated
      $prec['VALUE']=$value;
      $prec['UPDATED']=date('Y-m-d H:i:s');
+     $prec['CHECK_LATEST']=$prec['UPDATED'];
      SQLUpdate('owproperties', $prec);
      //$rec['LOG']=date('Y-m-d H:i:s')." ".$prec['SYSNAME'].": ".$prec['VALUE']."\n".$rec['LOG'];
      //SQLUpdate('owdevices', $rec);
