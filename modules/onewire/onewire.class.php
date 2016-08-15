@@ -581,6 +581,7 @@ function updateDisplay($id) {
     }
 
     if (!is_null($value)) {
+     $value = iconv("CP1251", "UTF-8", $value);
      // value updated
      $prec['VALUE']=$value;
      $prec['UPDATED']=date('Y-m-d H:i:s');
