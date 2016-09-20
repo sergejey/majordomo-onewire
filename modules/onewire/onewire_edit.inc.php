@@ -56,7 +56,7 @@
   //UPDATING RECORD
    if ($ok) {
     $rec['STATUS']=0;
-    $rec['CHECK_LATEST']='';
+    $rec['CHECK_LATEST']=date('Y-m-d H:i:s');
     $rec['CHECK_NEXT']=date('Y-m-d H:i:s');
     if ($rec['ID']) {
      SQLUpdate($table_name, $rec); // update
@@ -90,6 +90,9 @@
 
      $old_linked_object=$properties[$i]['LINKED_OBJECT'];
      $old_linked_property=$properties[$i]['LINKED_PROPERTY'];
+
+     $properties[$i]['CHECK_LATEST'] = date('Y-m-d H:i:s');
+     $properties[$i]['UPDATED'] = date('Y-m-d H:i:s');
 
      if (${'linked_object'.$properties[$i]['ID']} && ${'linked_property'.$properties[$i]['ID']}) {
       $properties[$i]['LINKED_OBJECT']=${'linked_object'.$properties[$i]['ID']};
