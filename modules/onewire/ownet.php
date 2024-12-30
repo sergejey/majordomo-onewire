@@ -178,7 +178,11 @@ class OWNet{
         }
         private function disconnect(){
                 // disconnect link
+
                 if ($this->link_type==OWNET_LINK_TYPE_SOCKET){          // socket
+                        if($this->link == 0){
+                                return true;
+                        }
                         @socket_set_block($this->link);
                         if ($this->sock_type==OWNET_LINK_TYPE_TCP)
                                 @socket_shutdown($this->link,2);
@@ -269,10 +273,12 @@ class OWNet{
                 $t2=($this->timeout*1000000)%1000000;
                 while ($num_changed_sockets<=0){        // can loop forever? owserver must send something! or disconnect!
                         $read=array($this->link);
+                        $write = NULL;
+                        $except = NULL;
                         if ($this->link_type==OWNET_LINK_TYPE_SOCKET)
-                                @$num_changed_sockets = socket_select($read, $write = NULL, $except = NULL, $t1,$t2);    // use socket_select
+                                @$num_changed_sockets = socket_select($read, $write, $except, $t1,$t2);    // use socket_select
                         else
-                                @$num_changed_sockets = stream_select($read, $write = NULL, $except = NULL, $t1,$t2);    // use stream_select
+                                @$num_changed_sockets = stream_select($read, $write, $except, $t1,$t2);    // use stream_select
                         if ($num_changed_sockets===false){      // error handling select
                                 $this->disconnect();
                                 trigger_error("Error handling get_msg#1",E_USER_NOTICE);
@@ -311,10 +317,12 @@ class OWNet{
                 $num_changed_sockets=0;
                 while ($num_changed_sockets<=0){
                         $write=array($this->link);
+                        $read = NULL;
+                        $except = NULL;
                         if ($this->link_type==OWNET_LINK_TYPE_SOCKET)
-                                @$num_changed_sockets = socket_select($read = NULL, $write , $except = NULL, 0,1000);    // use socket_select
+                                @$num_changed_sockets = socket_select($read, $write , $except, 0,1000);    // use socket_select
                         else
-                                @$num_changed_sockets = stream_select($read = NULL, $write , $except = NULL, 0,1000);    // use stream_select
+                                @$num_changed_sockets = stream_select($read, $write , $except, 0,1000);    // use stream_select
                         if ($num_changed_sockets===false){              // error handling
                                 $this->disconnect();
                                 trigger_error("Error handling send_msg#1",E_USER_NOTICE);
